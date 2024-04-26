@@ -1,0 +1,476 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "id": "8f868eb6",
+      "metadata": {
+        "id": "8f868eb6"
+      },
+      "source": [
+        "# Homework 3 - Python\n",
+        "\n",
+        "First Name:Thywill\n",
+        "\n",
+        "Last Name:Attipoe\n",
+        "\n",
+        "Group:PD231\n",
+        "\n",
+        "### After the assigment is done, please, push it to your [private GitHub repository](https://docs.github.com/en/github/administering-a-repository/managing-repository-settings/setting-repository-visibility) and invite [Majid-Sohrabi](https://github.com/Majid-Sohrabi)  as [collaborator](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-user-account/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository)."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "f47683d8",
+      "metadata": {
+        "id": "f47683d8"
+      },
+      "source": [
+        "## Task 1  (2 points) - Currency Converter cum Calculator\n",
+        "\n",
+        "\n",
+        "Let's create a Currency Calculator that can convert between USD, RUB, EUR, and AED. For conversion rate you can refer : [CBR Exchange rate](https://www.cbr.ru/eng/currency_base/daily/)\n",
+        "\n",
+        "After doing so , Perform below task with your currency calculator\n",
+        "\n",
+        "**1.** Ask a user, The amount they wish to convert (in any unit), The currency they want to convert from, The currency they want to convert to. Print final amount with clear statement.\n",
+        "\n",
+        "**2.** Convert EUR to RUB on two different dates: i.e. February 1, 2024, and March 7, 2024. Display the difference in conversion rates and the duration between the two dates in weeks, months, or years. ( Use [CBR Exchange rate](https://www.cbr.ru/eng/currency_base/daily/)) if you are using different dates clearly print in your code)\n",
+        "\n",
+        "**3.** You're tasked with determining the amount of AED:\n",
+        "You want to buy USD (United States Dollar) in Moscow using RUB (Russian Ruble) and then sell the USD in Dubai to get AED (United Arab Emirates Dirham).\n",
+        "\n",
+        "Given:\n",
+        "\n",
+        "Buying USD in Moscow:\n",
+        "*   Amount: 50000 RUB\n",
+        "*   Buy Commission: 0.12%\n",
+        "\n",
+        "Selling USD in Dubai to get AED:\n",
+        "*   Sale Commission: 0.15%\n",
+        "\n",
+        "Print : What amount of AED will be in your hand in Dubai?\n",
+        "\n",
+        "\n",
+        "**4.** On 1st June 2023, you plan to buy USD from four different banks, each charging a commission. After a sudden increase in the exchange rate, on 2nd February 2024, you intend to sell the USD back to these banks, again with commissions applied. Your goal is to determine which bank option will result in the most profitable.\n",
+        "\n",
+        "Given:\n",
+        "\n",
+        "Buying USD on 1st June 2023:\n",
+        "*   Exchange rate: 1 USD = 81 RUB\n",
+        "> Banks and their commissions:\n",
+        "*   Kazan Bank: 0.122%\n",
+        "*   Sber Bank: 0.131%\n",
+        "*   JSC VTB: 0.174%\n",
+        "*   Fora Bank: 0.156%\n",
+        "\n",
+        "Selling USD on 2nd February 2024:\n",
+        "\n",
+        "*   Exchange rate: 1 USD = 92.5 RUB\n",
+        "> Banks and their commissions:\n",
+        "*   Kazan Bank: 0.221%\n",
+        "*   Sber Bank: 0.202%\n",
+        "*   JSC VTB: 0.280%\n",
+        "*   Fora Bank: 0.192%"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 10,
+      "id": "2d62ba3d",
+      "metadata": {
+        "id": "2d62ba3d",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "3aaa87f4-0aca-44d7-f9e7-03ca07ba3b79"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "1. Currency Conversion\n",
+            "2. Convert EUR to RUB on two different dates\n",
+            "3. Calculate AED in Dubai\n",
+            "4. Determine the most profitable bank option\n",
+            "Enter your choice (1/2/3/4): 4\n",
+            "The most profitable bank option is Sber Bank with a profit of 7386.57 RUB\n"
+          ]
+        }
+      ],
+      "source": [
+        "# A\n",
+        "exchange_rates = {\n",
+        "    \"USD\": {\"RUB\": 75.5, \"EUR\": 0.9, \"AED\": 3.67},\n",
+        "    \"RUB\": {\"USD\": 0.013, \"EUR\": 0.012, \"AED\": 0.051},\n",
+        "    \"EUR\": {\"USD\": 1.12, \"RUB\": 83.6, \"AED\": 4.07},\n",
+        "    \"AED\": {\"USD\": 0.27, \"RUB\": 19.63, \"EUR\": 0.25}\n",
+        "}\n",
+        "\n",
+        "# B\n",
+        "def convert_currency(amount, from_currency, to_currency):\n",
+        "    if from_currency == to_currency:\n",
+        "        return amount\n",
+        "\n",
+        "    if from_currency not in exchange_rates or to_currency not in exchange_rates[from_currency]:\n",
+        "        return None\n",
+        "\n",
+        "    rate = exchange_rates[from_currency][to_currency]\n",
+        "    return amount * rate\n",
+        "\n",
+        "# Task 1\n",
+        "def perform_currency_conversion():\n",
+        "    amount = float(input(\"Enter the amount to convert: \"))\n",
+        "    from_currency = input(\"Enter the currency you want to convert from (e.g., USD, RUB, EUR, AED): \").upper()\n",
+        "    to_currency = input(\"Enter the currency you want to convert to (e.g., USD, RUB, EUR, AED): \").upper()\n",
+        "\n",
+        "    converted_amount = convert_currency(amount, from_currency, to_currency)\n",
+        "    if converted_amount is None:\n",
+        "        print(\"Invalid currency conversion\")\n",
+        "    else:\n",
+        "        print(f\"{amount} {from_currency} is equal to {converted_amount} {to_currency}\")\n",
+        "\n",
+        "# Task 2\n",
+        "def convert_eur_to_rub():\n",
+        "    eur_to_rub_feb1 = exchange_rates[\"EUR\"][\"RUB\"]\n",
+        "    eur_to_rub_mar7 = 98.20\n",
+        "\n",
+        "    difference = eur_to_rub_mar7 - eur_to_rub_feb1\n",
+        "    duration = datetime.datetime(2024, 3, 7) - datetime.datetime(2024, 2, 1)\n",
+        "\n",
+        "    print(f\"Difference in conversion rates: {difference} RUB\")\n",
+        "    print(f\"Duration between the two dates: {duration.days // 7} weeks\")\n",
+        "\n",
+        "# Task 3\n",
+        "def calculate_aed_in_dubai():\n",
+        "    amount_rub = 50000\n",
+        "    buy_commission = 0.12 / 100\n",
+        "    sale_commission = 0.15 / 100\n",
+        "\n",
+        "    usd_in_moscow = amount_rub / exchange_rates[\"RUB\"][\"USD\"]\n",
+        "    usd_after_commission = usd_in_moscow * (1 - buy_commission)\n",
+        "    aed_in_dubai = usd_after_commission * exchange_rates[\"USD\"][\"AED\"] * (1 - sale_commission)\n",
+        "\n",
+        "    print(f\"The amount of AED in your hand in Dubai: {aed_in_dubai}\")\n",
+        "\n",
+        "# Task 4\n",
+        "def determine_most_profitable_bank():\n",
+        "    amount_usd = 1\n",
+        "    exchange_rate_buy = 81\n",
+        "    exchange_rate_sell = 92.5\n",
+        "\n",
+        "    banks = {\n",
+        "        \"Kazan Bank\": {\"buy_commission\": 0.122 / 100, \"sell_commission\": 0.221 / 100},\n",
+        "        \"Sber Bank\": {\"buy_commission\": 0.131 / 100, \"sell_commission\": 0.202 / 100},\n",
+        "        \"JSC VTB\": {\"buy_commission\": 0.174 / 100, \"sell_commission\": 0.280 / 100},\n",
+        "        \"Fora Bank\": {\"buy_commission\": 0.156 / 100, \"sell_commission\": 0.192 / 100}\n",
+        "    }\n",
+        "\n",
+        "    profits = {}\n",
+        "    for bank, commission in banks.items():\n",
+        "        usd_after_buy = amount_usd * exchange_rate_buy * (1 - commission[\"buy_commission\"])\n",
+        "        rub_after_sell = usd_after_buy * exchange_rate_sell * (1 - commission[\"sell_commission\"])\n",
+        "        profit = rub_after_sell - amount_usd * exchange_rate_buy\n",
+        "        profits[bank] = profit\n",
+        "\n",
+        "    most_profitable_bank = max(profits, key=profits.get)\n",
+        "    max_profit = profits[most_profitable_bank]\n",
+        "\n",
+        "    print(f\"The most profitable bank option is {most_profitable_bank} with a profit of {max_profit:.2f} RUB\")\n",
+        "\n",
+        "\n",
+        "def main():\n",
+        "    print(\"1. Currency Conversion\")\n",
+        "    print(\"2. Convert EUR to RUB on two different dates\")\n",
+        "    print(\"3. Calculate AED in Dubai\")\n",
+        "    print(\"4. Determine the most profitable bank option\")\n",
+        "\n",
+        "    choice = int(input(\"Enter your choice (1/2/3/4): \"))\n",
+        "\n",
+        "    if choice == 1:\n",
+        "        perform_currency_conversion()\n",
+        "    elif choice == 2:\n",
+        "        convert_eur_to_rub()\n",
+        "    elif choice == 3:\n",
+        "        calculate_aed_in_dubai()\n",
+        "    elif choice == 4:\n",
+        "        determine_most_profitable_bank()\n",
+        "    else:\n",
+        "        print(\"Invalid choice\")\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    main()"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "89040ea7",
+      "metadata": {
+        "id": "89040ea7"
+      },
+      "source": [
+        "## Task 2  (0.5 points)\n",
+        "\n",
+        "You're task is to creat a Python program that analyzes a piece of text and provides the frequency of each word in it. The program should use a user-defined function that takes the text as input and returns a dictionary where the keys are the words in the text and the values are the frequencies of those words. Also, print most frequent word in text.\n",
+        "\n",
+        "Your program should allow the user to input any text and then display the word frequency dictionary."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 11,
+      "id": "782170f2",
+      "metadata": {
+        "id": "782170f2",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "c37bbddd-bbee-42c0-e8fe-9172ba091d56"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter the text: everything must come to past\n",
+            "Word Frequency:\n",
+            "everything: 1\n",
+            "must: 1\n",
+            "come: 1\n",
+            "to: 1\n",
+            "past: 1\n",
+            "\n",
+            "Most frequent word: everything\n"
+          ]
+        }
+      ],
+      "source": [
+        "def word_frequency(text):\n",
+        "    words = text.lower().split()\n",
+        "    frequency = {}\n",
+        "    for word in words:\n",
+        "        if word in frequency:\n",
+        "            frequency[word] += 1\n",
+        "        else:\n",
+        "            frequency[word] = 1\n",
+        "    return frequency\n",
+        "\n",
+        "def most_frequent_word(text):\n",
+        "    frequency = word_frequency(text)\n",
+        "    most_frequent = max(frequency, key=frequency.get)\n",
+        "    return most_frequent\n",
+        "\n",
+        "def main():\n",
+        "    text = input(\"Enter the text: \")\n",
+        "    frequency = word_frequency(text)\n",
+        "    print(\"Word Frequency:\")\n",
+        "    for word, freq in frequency.items():\n",
+        "        print(f\"{word}: {freq}\")\n",
+        "\n",
+        "    most_frequent = most_frequent_word(text)\n",
+        "    print(\"\\nMost frequent word:\", most_frequent)\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    main()\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "9f0f0213",
+      "metadata": {
+        "id": "9f0f0213"
+      },
+      "source": [
+        "## Task 3 - Shopping Inventory (1 points)\n",
+        "\n",
+        "You are given an inventory of items available in a shopping market represented as a dictionary where the keys are the item names and the values are the corresponding quantities available. Your task is to create a program that helps users create a sorted shopping list.\n",
+        "\n",
+        "Your program should:\n",
+        "\n",
+        "Prompt the user to input the items they want to buy, one at a time.\n",
+        "Check if the item is available in the inventory. If it is, add it to the shopping list. If not, inform the user that the item is not available.\n",
+        "After the user finishes inputting their items, sort the shopping list alphabetically.\n",
+        "Display the sorted shopping list to the user.\n",
+        "\n",
+        "Sample Shopping list: You can use your or user entered items & values.\n",
+        "```\n",
+        "    'apple': 10,\n",
+        "    'banana': 5,\n",
+        "    'orange': 8,\n",
+        "    'grapes': 3\n",
+        "\n",
+        "```"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 12,
+      "id": "c79ed191",
+      "metadata": {
+        "id": "c79ed191",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "8cd38457-b055-4f22-b459-5c1cc5940f7a"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Welcome to the shopping list creator!\n",
+            "Available items in the inventory:\n",
+            "Apple: 10\n",
+            "Banana: 5\n",
+            "Orange: 8\n",
+            "Grapes: 3\n",
+            "Enter the item you want to buy (or 'done' to finish): Orange\n",
+            "Orange added to shopping list.\n",
+            "Enter the item you want to buy (or 'done' to finish): Grapes\n",
+            "Grapes added to shopping list.\n",
+            "Enter the item you want to buy (or 'done' to finish): done\n",
+            "\n",
+            "Your sorted shopping list:\n",
+            "Grapes\n",
+            "Orange\n"
+          ]
+        }
+      ],
+      "source": [
+        "def create_shopping_list(inventory):\n",
+        "    shopping_list = []\n",
+        "    while True:\n",
+        "        item = input(\"Enter the item you want to buy (or 'done' to finish): \").lower()\n",
+        "        if item == 'done':\n",
+        "            break\n",
+        "        elif item in inventory and inventory[item] > 0:\n",
+        "            shopping_list.append(item)\n",
+        "            print(f\"{item.capitalize()} added to shopping list.\")\n",
+        "            inventory[item] -= 1\n",
+        "        else:\n",
+        "            print(f\"Sorry, {item.capitalize()} is not available.\")\n",
+        "    return sorted(shopping_list)\n",
+        "\n",
+        "def main():\n",
+        "    inventory = {\n",
+        "        'apple': 10,\n",
+        "        'banana': 5,\n",
+        "        'orange': 8,\n",
+        "        'grapes': 3\n",
+        "    }\n",
+        "\n",
+        "    print(\"Welcome to the shopping list creator!\")\n",
+        "    print(\"Available items in the inventory:\")\n",
+        "    for item, quantity in inventory.items():\n",
+        "        print(f\"{item.capitalize()}: {quantity}\")\n",
+        "\n",
+        "    shopping_list = create_shopping_list(inventory)\n",
+        "\n",
+        "    if shopping_list:\n",
+        "        print(\"\\nYour sorted shopping list:\")\n",
+        "        for item in shopping_list:\n",
+        "            print(item.capitalize())\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    main()"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "8a0edbe2",
+      "metadata": {
+        "id": "8a0edbe2"
+      },
+      "source": [
+        "## Task 4  (0.5 point)\n",
+        "\n",
+        "Ask a user to enter time stamp in the format (hour, minute, second) use comma separated value or separate block. Your task is to first print each timestamp in the list and then convert this stamp in seconds."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 13,
+      "id": "5414b2cf",
+      "metadata": {
+        "id": "5414b2cf",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "8724394b-000e-4237-97e3-5c7693169716"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter timestamp in the format (hour, minute, second) or 'done' to finish: 345,56,55\n",
+            "Enter timestamp in the format (hour, minute, second) or 'done' to finish: done\n",
+            "\n",
+            "Timestamps:\n",
+            "345 hour(s), 56 minute(s), 55 second(s)\n",
+            "\n",
+            "Converted to seconds:\n",
+            "345:56:55 = 1245415 seconds\n"
+          ]
+        }
+      ],
+      "source": [
+        "def timestamp_to_seconds(timestamp):\n",
+        "    hour, minute, second = timestamp\n",
+        "    return hour * 3600 + minute * 60 + second\n",
+        "\n",
+        "def main():\n",
+        "    timestamps = []\n",
+        "\n",
+        "    while True:\n",
+        "        timestamp_input = input(\"Enter timestamp in the format (hour, minute, second) or 'done' to finish: \")\n",
+        "\n",
+        "        if timestamp_input.lower() == 'done':\n",
+        "            break\n",
+        "\n",
+        "        try:\n",
+        "\n",
+        "            hour, minute, second = map(int, timestamp_input.split(','))\n",
+        "            timestamps.append((hour, minute, second))\n",
+        "        except ValueError:\n",
+        "            print(\"Invalid input format. Please enter in the format (hour, minute, second) separated by commas.\")\n",
+        "\n",
+        "    print(\"\\nTimestamps:\")\n",
+        "    for timestamp in timestamps:\n",
+        "        print(f\"{timestamp[0]} hour(s), {timestamp[1]} minute(s), {timestamp[2]} second(s)\")\n",
+        "\n",
+        "    print(\"\\nConverted to seconds:\")\n",
+        "    for timestamp in timestamps:\n",
+        "        total_seconds = timestamp_to_seconds(timestamp)\n",
+        "        print(f\"{timestamp[0]}:{timestamp[1]}:{timestamp[2]} = {total_seconds} seconds\")\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    main()"
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.9.12"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
